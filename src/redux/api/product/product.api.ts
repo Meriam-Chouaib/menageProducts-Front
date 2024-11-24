@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CONFIG } from '../../config/config'
-import { Product } from '../../types/models/Product'
-import { ResponseProducts } from './product.type'
+import { CONFIG } from '../../../config/config'
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -13,9 +11,7 @@ export const productApi = createApi({
     getProducts: builder.query({
       query: (params) =>
         `/?page=${Number(params.page)}&rowsPerPage=${params.rowsPerPage}`,
-      // transformResponse: (result: ResponseProducts): ResponseUsers => {
-      //   return decodGetUsers(result)
-      // },
+
       providesTags: ['Products'],
     }),
     getProductById: builder.query({

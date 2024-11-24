@@ -1,15 +1,22 @@
-import { useGetProductsQuery } from '../../redux/api/product.api'
-import { Typography } from '@mui/material'
-import ListProducts from '../../features/Products/ListProducts/ListProducts'
-import AddButton from '../../components/Buttons/AddButton/AddButton'
+import { Stack, Typography } from '@mui/material'
+
+import { useAppSelector } from '../../redux/hooks'
+import { selectUser } from '../../redux/slices/auth.slice'
+import { getPersistData } from '../../utils/localstorage/localStorage.utils'
 
 const Home = () => {
+  const user = useAppSelector(selectUser)
+  const token = getPersistData('token', true)
   return (
     <>
-      <Typography variant='h1' textAlign={'center'} paddingY={5}>
-        Product List
-      </Typography>
-      <ListProducts />
+      {token && (
+        <Stack>
+          <Typography variant='h1'>Welcome, {user.username}!</Typography>
+          <Typography variant='body1'>Email: {user.email}</Typography>
+          <Typography variant='body1'>Status: {user.statut}</Typography>
+          <Typography variant='body1'>Role: {user.role}</Typography>
+        </Stack>
+      )}
     </>
   )
 }

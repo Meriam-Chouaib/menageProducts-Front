@@ -8,7 +8,7 @@ import {
   useGetProductsByKeywordQuery,
   useGetProductsQuery,
   useUpdateProductMutation,
-} from '../../redux/api/product.api'
+} from '../../redux/api/product/product.api'
 
 export const useProducts = (search: string, paginator: Paginator) => {
   const [productsToShow, setProductsToShow] = useState<Product[]>([])

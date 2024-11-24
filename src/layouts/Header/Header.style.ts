@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material'
+import { Box, Button, styled } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 export const BoxHeader = styled(Box)(({ theme }) => ({
@@ -16,4 +16,14 @@ export const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   fontFamily: 'arial',
   fontWeight: 500,
+  padding: '0px 20px',
+}))
+export const LinkModal = styled(Button)(({ theme }) => ({
+  color: theme.palette.primary.dark,
+  fontFamily: 'arial',
+  fontWeight: 500,
+  padding: '0px 20px',
+  marginLeft: '20px',
+  cursor: 'pointer',
+  textTransform: 'capitalize',
 }))

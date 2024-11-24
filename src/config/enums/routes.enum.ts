@@ -1,5 +1,8 @@
 export enum RouteIdEnum {
   Root = '/',
-  Home = '/products',
+  PRODUCTS = '/products',
   Empty = '',
+  SIGNIN = '/signin',
+  SIGNUP = '/signup',
+  LOGOUT = '/logout',
 }
