@@ -7,15 +7,15 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from '@mui/material'
 import { Product } from '../../types/models/Product'
 import { productValidationSchema } from '../../types/schemas/product.validation.schema'
 import { Controller, useForm } from 'react-hook-form'
+import FormProvider from '../HookForm/FormProvider'
+import RHFTextField from '../HookForm/TextField'
+import RHFSelect from '../HookForm/RHFSelect'
+import { selectUserId } from '../../redux/slices/auth.slice'
+import { useAppSelector } from '../../redux/hooks'
 
 interface ProductModalProps {
   open: boolean
@@ -25,8 +25,12 @@ interface ProductModalProps {
   productToEdit: Product | null
 }
 
-const CATEGORIES = ['Clothes', 'Electronics', 'Telephones', 'Other']
-
+const CATEGORIES = [
+  { value: 'clothes', label: 'Clothes' },
+  { value: 'electronics', label: 'Electronics' },
+  { value: 'telephones', label: 'Telephones' },
+  { value: 'other', label: 'Other' },
+]
 const ProductModal: React.FC<ProductModalProps> = ({
   open,
   onClose,
@@ -34,22 +38,26 @@ const ProductModal: React.FC<ProductModalProps> = ({
   title,
   productToEdit,
 }) => {
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const userId = useAppSelector(selectUserId)
+  console.log('🚀 ~ userId:', userId)
+  const methods = useForm({
     resolver: yupResolver(productValidationSchema),
     defaultValues: {
       name: '',
       price: 0,
       quantity: 0,
       category: '',
+      description: '',
+      userId: userId,
     },
   })
-
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = methods
   useEffect(() => {
     if (productToEdit) {
       reset({
@@ -57,90 +65,54 @@ const ProductModal: React.FC<ProductModalProps> = ({
         price: productToEdit.price || 0,
         quantity: productToEdit.quantity || 0,
         category: productToEdit.category || '',
+        description: productToEdit.description || '',
       })
     }
   }, [productToEdit, reset])
 
   const onFormSubmit = (data: Product) => {
-    onSubmit(data)
+    onSubmit({ ...data, userId: userId })
     onClose()
   }
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+      <FormProvider onSubmit={handleSubmit(onFormSubmit)} methods={methods}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <Controller
+          <RHFTextField
+            label='Product Name'
+            fullWidth
+            margin='normal'
+            error={!!errors.name}
+            helperText={errors.name?.message}
             name='name'
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label='Product Name'
-                fullWidth
-                margin='normal'
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            )}
           />
 
-          <Controller
+          <RHFTextField
+            label='Price'
             name='price'
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label='Price'
-                fullWidth
-                margin='normal'
-                error={!!errors.price}
-                helperText={errors.price?.message}
-              />
-            )}
+            type='number'
+            error={!!errors.price}
+            helperText={errors.price?.message}
           />
 
-          <Controller
+          <RHFTextField
+            label='Quantity'
             name='quantity'
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label='Quantity'
-                fullWidth
-                margin='normal'
-                error={!!errors.quantity}
-                helperText={errors.quantity?.message}
-              />
-            )}
+            type='number'
+            error={!!errors.quantity}
+            helperText={errors.quantity?.message}
           />
-
-          <Controller
-            name='category'
-            control={control}
-            render={({ field }) => (
-              <FormControl fullWidth margin='normal' error={!!errors.category}>
-                <InputLabel id='category-select-label'>Category</InputLabel>
-                <Select
-                  {...field}
-                  labelId='category-select-label'
-                  fullWidth
-                  value={field.value || ''}
-                >
-                  <MenuItem value='clothes'>Clothes</MenuItem>
-                  <MenuItem value='electronics'>Electronics</MenuItem>
-                  <MenuItem value='telephones'>Telephones</MenuItem>
-                  <MenuItem value='other'>Other</MenuItem>
-                </Select>
-                {errors.category && (
-                  <p style={{ color: 'red', marginTop: '0.5rem' }}>
-                    {errors.category.message}
-                  </p>
-                )}
-              </FormControl>
-            )}
+          <RHFTextField
+            label='Product Description'
+            fullWidth
+            margin='normal'
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            name='description'
           />
+          <RHFSelect name='category' label='Category' options={CATEGORIES} />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color='secondary'>
@@ -150,7 +122,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
             {title === 'Create Product' ? 'Create' : 'Update'}
           </Button>
         </DialogActions>
-      </form>
+      </FormProvider>
     </Dialog>
   )
 }

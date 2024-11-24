@@ -14,4 +14,6 @@ export const productValidationSchema = Yup.object().shape({
     .positive('Quantity must be greater than zero')
     .required('Quantity is required'),
   category: Yup.string().required('Category is required'),
+  description: Yup.string().required('description is required'),
+  userId: Yup.number().required(''),
 })

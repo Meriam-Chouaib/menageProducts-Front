@@ -11,6 +11,8 @@ import { useProducts } from '../../../hooks/useDebounce/useProducts'
 import usePaginator from '../../../hooks/usePaginator'
 import { initialProductsPaginator } from './ListProducts.constants'
 import Paginator from '../../../components/Paginator/Paginator'
+import { useAppSelector } from '../../../redux/hooks'
+import { selectRole } from '../../../redux/slices/auth.slice'
 
 const ListProducts = () => {
   const [search, setSearch] = useState('')
@@ -52,11 +54,15 @@ const ListProducts = () => {
     }
     setOpenModal(false)
   }
+  const userRole = useAppSelector(selectRole)
+  console.log('🚀 ~ ListProducts ~ userRole:', userRole)
 
   return (
     <>
       <StackStyled justifyContent='space-between'>
-        <AddButton label='Add Product' onClick={openCreateModal} />
+        {userRole != 'VISITOR' && (
+          <AddButton label='Add Product' onClick={openCreateModal} />
+        )}
         <SearchInput
           search={search}
           setSearch={setSearch}

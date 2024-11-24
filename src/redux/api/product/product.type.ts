@@ -1,4 +1,4 @@
-import { Product } from '../../types/models/Product'
+import { Product } from '../../../types/models/Product'
 
 export interface ResponseProducts {
   products: Product[]
