@@ -1,18 +1,19 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ClipLoader } from 'react-spinners'
-import { Pagination, Stack, Typography } from '@mui/material'
-import CardItem from '../../../components/CardItem/CardItem'
-import { StackStyled } from './ListProducts.style'
-import ProductModal from '../../../components/Modal/ProductModal'
-import AddButton from '../../../components/Buttons/AddButton/AddButton'
-import SearchInput from '../../../components/SearchInput/SearchInput'
-import { Product, IProduct } from '../../../types/models/Product'
-import { useProducts } from '../../../hooks/useDebounce/useProducts'
-import usePaginator from '../../../hooks/usePaginator'
-import { initialProductsPaginator } from './ListProducts.constants'
-import Paginator from '../../../components/Paginator/Paginator'
-import { useAppSelector } from '../../../redux/hooks'
+import { Typography } from '@mui/material'
+
+import { StackStyled } from 'features/Products/ListProducts/ListProducts.style'
+import { IProduct, Product } from 'types/models/Product'
+import usePaginator from 'hooks/usePaginator'
+import { initialProductsPaginator } from 'features/Products/ListProducts/ListProducts.constants'
+import { useProducts } from 'hooks/useDebounce/useProducts'
+import AddButton from 'components/Buttons/AddButton/AddButton'
+import SearchInput from 'components/SearchInput/SearchInput'
+import CardItem from 'components/CardItem/CardItem'
+import Paginator from 'components/Paginator/Paginator'
+import ProductModal from 'components/Modal/ProductModal'
 import { selectRole } from '../../../redux/slices/auth.slice'
+import { useAppSelector } from '../../../redux/hooks'
 
 const ListProducts = () => {
   const [search, setSearch] = useState('')
@@ -55,7 +56,6 @@ const ListProducts = () => {
     setOpenModal(false)
   }
   const userRole = useAppSelector(selectRole)
-  console.log('🚀 ~ ListProducts ~ userRole:', userRole)
 
   return (
     <>
@@ -66,15 +66,13 @@ const ListProducts = () => {
         <SearchInput
           search={search}
           setSearch={setSearch}
-          handleSubmit={() => {
-            console.log('im here')
-          }}
+          handleSubmit={() => {}}
         />
       </StackStyled>
 
       {isLoading ? (
         <StackStyled width={'100%'} height={'100%'} justifyContent={'center'}>
-          <ClipLoader color='#36d7b7' loading size={100} />
+          <ClipLoader color='secondary' loading size={100} />
         </StackStyled>
       ) : (
         <>

@@ -39,7 +39,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
   productToEdit,
 }) => {
   const userId = useAppSelector(selectUserId)
-  console.log('🚀 ~ userId:', userId)
   const methods = useForm({
     resolver: yupResolver(productValidationSchema),
     defaultValues: {

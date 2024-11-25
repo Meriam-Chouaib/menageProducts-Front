@@ -15,6 +15,7 @@ const initialState: UserState = {
   isActive: false,
   phone: '',
   id: 0,
+  isConnected: false,
 }
 
 export const userSlice = createSlice({
@@ -22,9 +23,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     signinUser(state, action: PayloadAction<UserState>) {
-      return { ...state, ...action.payload, isLogged: true }
+      return { ...state, ...action.payload, isLogged: true, isConnected: true }
     },
-    signoutUser(state) {
+    signoutUser() {
       localStorage.removeItem('token')
       return { ...initialState }
     },
@@ -43,6 +44,7 @@ export const userSlice = createSlice({
         state.isActive = user.isActive
         state.phone = user.phone
         state.id = user.id
+        state.isConnected = true
         persistData(CONSTANTS.TOKEN, payload.token)
       }
     )
@@ -53,6 +55,7 @@ export const selectIsActive = (state: RootState) => state.user.isActive
 export const selectUsername = (state: RootState) => state.user.username
 export const selectUserId = (state: RootState) => state.user.id
 export const selectUser = (state: RootState) => state.user
+export const selectIsConnected = (state: RootState) => state.user.isConnected
 
 export const { signinUser, signoutUser } = userSlice.actions
 

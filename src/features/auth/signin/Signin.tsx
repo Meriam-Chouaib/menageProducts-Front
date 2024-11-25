@@ -24,7 +24,7 @@ const SignIn = ({ onClose }: { onClose: () => void }) => {
       email: '',
       password: '',
     },
-    resolver: yupResolver(validationSigninSchema), // Integrate Yup with react-hook-form
+    resolver: yupResolver(validationSigninSchema),
   })
 
   const {
@@ -37,11 +37,6 @@ const SignIn = ({ onClose }: { onClose: () => void }) => {
       const result: any = await signin(data)
 
       if (result.data?.status === 200) {
-        console.log(
-          '🚀 ~ onSubmit ~ result.data?.message:',
-          result.data?.message
-        )
-
         toast.success(result.data.message || 'Operation successful!', {
           position: 'top-right',
           autoClose: 1000,

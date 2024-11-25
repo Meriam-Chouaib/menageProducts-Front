@@ -8,4 +8,5 @@ export interface UserState {
   isActive: boolean
   phone: string
   id: number
+  isConnected?: boolean
 }
