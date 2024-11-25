@@ -1,0 +1,7 @@
+{
+  "color-highlight.rgbWithNoFunctionLanguages": ["*"],
+  "color-highlight.sass.includePaths": [],
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.updateImportsOnFileMove.enabled": "always"
+}

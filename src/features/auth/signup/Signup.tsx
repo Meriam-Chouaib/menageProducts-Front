@@ -19,9 +19,7 @@ const SignUp = () => {
     },
   })
 
-  const onSubmit = (data: any) => {
-    console.log('Signup Data:', data)
-  }
+  const onSubmit = (data: any) => {}
 
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>

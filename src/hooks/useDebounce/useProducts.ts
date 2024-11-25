@@ -37,7 +37,6 @@ export const useProducts = (search: string, paginator: Paginator) => {
   const handleDelete = async (id: number) => {
     try {
       await deleteProduct(id).unwrap()
-      console.log('Product deleted successfully')
     } catch (error) {
       console.error('Error deleting product:', error)
     }
@@ -46,7 +45,6 @@ export const useProducts = (search: string, paginator: Paginator) => {
   const handleUpdate = async (product: IProduct, selectedProductId: number) => {
     try {
       await updateProduct({ id: selectedProductId, ...product }).unwrap()
-      console.log('Product updated successfully')
     } catch (error) {
       console.error('Error updating product:', error)
     }
@@ -55,7 +53,6 @@ export const useProducts = (search: string, paginator: Paginator) => {
   const handleCreate = async (product: Product) => {
     try {
       await createProduct(product).unwrap()
-      console.log('Product created successfully')
     } catch (error) {
       console.error('Error creating product:', error)
     }

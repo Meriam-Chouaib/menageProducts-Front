@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BoxHeader, LinkModal, LinkStyled } from './Header.style'
 import { RouteIdEnum } from '../../config/enums/routes.enum'
 import AuthModal from '../../components/Modal/AuthModal'
-import { Button } from '@mui/material'
-import { getPersistData } from '../../utils/localstorage/localStorage.utils'
-import { CONSTANTS } from '../../config/constants/constants'
+
 import { clearLocalStorage } from '../../utils/localstorage/clearLoalStorage'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { selectIsConnected, signoutUser } from '../../redux/slices/auth.slice'
 
 const Header = () => {
+  const dispatch = useAppDispatch()
+
   const [openModalType, setOpenModalType] = useState<
     'signin' | 'signup' | null
   >(null)
@@ -19,21 +21,22 @@ const Header = () => {
   const handleCloseModal = () => {
     setOpenModalType(null)
   }
-  // TODO create logout api and call is here
+  // TODO create logout api and call it here
   const handleLogout = () => {
     clearLocalStorage()
     setOpenModalType(null)
+    dispatch(signoutUser())
   }
-  const isConnectedUser = getPersistData(CONSTANTS.TOKEN, true) ? true : false
-  console.log('🚀 ~ Header ~ isConnectedUser:', isConnectedUser)
+  const isConnected = useAppSelector(selectIsConnected)
+  console.log('🚀 ~ Header ~ isConnectedUser:', isConnected)
   return (
     <BoxHeader>
       <LinkStyled to={RouteIdEnum.PRODUCTS}>Products</LinkStyled>
-      {!isConnectedUser && (
+      {!isConnected && (
         <LinkModal onClick={() => handleOpenModal('signin')}>Signin</LinkModal>
       )}
       <LinkStyled to={RouteIdEnum.Empty}>Home</LinkStyled>
-      {isConnectedUser && <LinkModal onClick={handleLogout}>logout</LinkModal>}
+      {isConnected && <LinkModal onClick={handleLogout}>logout</LinkModal>}
       {openModalType && (
         <AuthModal type={openModalType} onClose={handleCloseModal} />
       )}
