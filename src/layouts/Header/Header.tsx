@@ -6,9 +6,11 @@ import AuthModal from '../../components/Modal/AuthModal'
 import { clearLocalStorage } from '../../utils/localstorage/clearLoalStorage'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { selectIsConnected, signoutUser } from '../../redux/slices/auth.slice'
+import { useLogoutMutation } from '../../redux/api/auth/auth.api'
 
 const Header = () => {
   const dispatch = useAppDispatch()
+  const [logout] = useLogoutMutation()
 
   const [openModalType, setOpenModalType] = useState<
     'signin' | 'signup' | null
@@ -21,14 +23,14 @@ const Header = () => {
   const handleCloseModal = () => {
     setOpenModalType(null)
   }
-  // TODO create logout api and call it here
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const result: any = await logout({})
+
     clearLocalStorage()
     setOpenModalType(null)
     dispatch(signoutUser())
   }
   const isConnected = useAppSelector(selectIsConnected)
-  console.log('🚀 ~ Header ~ isConnectedUser:', isConnected)
   return (
     <BoxHeader>
       <LinkStyled to={RouteIdEnum.PRODUCTS}>Products</LinkStyled>
