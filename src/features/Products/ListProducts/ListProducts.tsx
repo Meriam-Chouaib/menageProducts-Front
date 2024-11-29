@@ -12,7 +12,7 @@ import SearchInput from 'components/SearchInput/SearchInput'
 import CardItem from 'components/CardItem/CardItem'
 import Paginator from 'components/Paginator/Paginator'
 import ProductModal from 'components/Modal/ProductModal'
-import { selectRole } from '../../../redux/slices/auth.slice'
+import { selectRole, selectUserId } from '../../../redux/slices/auth.slice'
 import { useAppSelector } from '../../../redux/hooks'
 
 const ListProducts = () => {
@@ -46,12 +46,29 @@ const ListProducts = () => {
     setModalTitle('Create Product')
     setOpenModal(true)
   }
-
+  const userId = useAppSelector(selectUserId)
   const handleModalSubmit = (product: IProduct) => {
+    const imagesData = product.images.map((image: any) => ({
+      url: image.name,
+    }))
     if (selectedProduct && selectedProduct.id != undefined) {
-      handleUpdate(product, selectedProduct.id)
+      handleUpdate(
+        {
+          ...product,
+          images: {
+            create: imagesData,
+          },
+        },
+        selectedProduct.id
+      )
     } else {
-      handleCreate(product)
+      handleCreate({
+        ...product,
+        images: {
+          create: imagesData,
+        },
+        userId,
+      })
     }
     setOpenModal(false)
   }

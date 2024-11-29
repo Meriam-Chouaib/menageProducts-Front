@@ -16,6 +16,8 @@ import RHFTextField from '../HookForm/TextField'
 import RHFSelect from '../HookForm/RHFSelect'
 import { selectUserId } from '../../redux/slices/auth.slice'
 import { useAppSelector } from '../../redux/hooks'
+import InputFile from 'components/HookForm/InputFile'
+import { MuiFileInput } from 'mui-file-input'
 
 interface ProductModalProps {
   open: boolean
@@ -48,6 +50,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
       category: '',
       description: '',
       userId: userId,
+      images: [],
     },
   })
   const {
@@ -63,15 +66,19 @@ const ProductModal: React.FC<ProductModalProps> = ({
         name: productToEdit.name || '',
         price: productToEdit.price || 0,
         quantity: productToEdit.quantity || 0,
-        category: productToEdit.category || '',
+        category: productToEdit.category,
         description: productToEdit.description || '',
+        images: productToEdit.images || [],
       })
     }
   }, [productToEdit, reset])
 
   const onFormSubmit = (data: Product) => {
-    onSubmit({ ...data, userId: userId })
-    onClose()
+    try {
+      onSubmit(data)
+    } catch (error) {
+      console.error('Error during form submission:', error)
+    }
   }
 
   return (
@@ -110,6 +117,29 @@ const ProductModal: React.FC<ProductModalProps> = ({
             error={!!errors.description}
             helperText={errors.description?.message}
             name='description'
+          />
+          <Controller
+            name='images'
+            control={control}
+            render={({ field }) => (
+              <MuiFileInput
+                multiple={true}
+                label='Product Image'
+                {...field}
+                error={!!errors.images}
+                helperText={errors.images?.message}
+                value={
+                  field.value.filter((file) => file !== undefined) as File[]
+                } // Explicit type assertion
+                onChange={(files: File[]) => {
+                  console.log('Selected files:', files) // Check the selected files
+                  field.onChange(
+                    files.filter((file) => file !== undefined) as File[]
+                  )
+                }}
+              />
+            )}
+            rules={{ required: 'Product image is required' }}
           />
           <RHFSelect name='category' label='Category' options={CATEGORIES} />
         </DialogContent>

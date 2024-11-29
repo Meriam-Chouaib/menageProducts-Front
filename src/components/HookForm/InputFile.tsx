@@ -12,14 +12,14 @@ interface TextFieldProps extends StandardTextFieldProps {
   inputProps?: any
 }
 
-export default function RHFTextField({
+export default function InputFile({
   name,
   label,
   rules,
   type,
   ...other
 }: TextFieldProps) {
-  const { control, setValue, register } = useFormContext()
+  const { control, setValue } = useFormContext()
 
   return (
     <Controller
@@ -35,7 +35,13 @@ export default function RHFTextField({
           error={!!error}
           helperText={error && error.message && error?.message}
           {...other}
-          {...register(name)}
+          onChange={(event) => {
+            const target = event.target as HTMLInputElement
+            if (target.files) {
+              const file = target.files[0]
+              setValue(name, file)
+            }
+          }}
           sx={{ marginBottom: '10px' }}
         />
       )}

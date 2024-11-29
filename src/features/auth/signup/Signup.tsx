@@ -12,7 +12,7 @@ const SignUp = () => {
       username: '',
       statut: 'ONLINE',
       role: 'USER',
-      image: '',
+      images: '',
       isLogged: true,
       isActive: true,
       phone: '',
@@ -90,7 +90,7 @@ const SignUp = () => {
 
         {/* Image */}
         <RHFTextField
-          name='image'
+          name='images'
           label='Profile Image URL'
           type='file'
           rules={{

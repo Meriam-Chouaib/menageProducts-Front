@@ -1,24 +1,38 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CONFIG } from '../../../config/config'
+import { createApi } from '@reduxjs/toolkit/query/react'
+import { apiBaseQuery } from '../../../redux/baseQueryConfig'
 
 export const productApi = createApi({
   reducerPath: 'productApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${CONFIG.BASE_URL_API}products`,
-  }),
+  baseQuery: apiBaseQuery('products'),
+
   tagTypes: ['Products'],
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: (params) =>
-        `/?page=${Number(params.page)}&rowsPerPage=${params.rowsPerPage}`,
-
+      query: (params) => {
+        return {
+          url: `/?page=${Number(params.page)}&rowsPerPage=${
+            params.rowsPerPage
+          }`,
+          requiresAuth: false,
+        }
+      },
       providesTags: ['Products'],
     }),
     getProductById: builder.query({
-      query: (id: number) => `/${id}`,
+      query: (id: number) => {
+        return {
+          url: `/${id}`,
+          requiresAuth: false,
+        }
+      },
     }),
     getProductsByKeyword: builder.query({
-      query: (keyword: string) => `/search/${keyword}`,
+      query: (keyword: string) => {
+        return {
+          url: `/search/${keyword}`,
+          requiresAuth: false,
+        }
+      },
       providesTags: ['Products'],
     }),
     createProduct: builder.mutation({
@@ -26,6 +40,7 @@ export const productApi = createApi({
         url: '/',
         method: 'POST',
         body: newProduct,
+        requiresAuth: true,
       }),
       invalidatesTags: ['Products'],
     }),
@@ -34,6 +49,7 @@ export const productApi = createApi({
         url: `?id=${id}`,
         method: 'PUT',
         body: data,
+        requiresAuth: true,
       }),
       invalidatesTags: ['Products'],
     }),
@@ -41,6 +57,7 @@ export const productApi = createApi({
       query: (id: number) => ({
         url: `?id=${id}`,
         method: 'DELETE',
+        requiresAuth: true,
       }),
       invalidatesTags: ['Products'],
     }),
