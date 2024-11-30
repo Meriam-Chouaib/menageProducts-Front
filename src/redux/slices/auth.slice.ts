@@ -44,8 +44,9 @@ export const userSlice = createSlice({
         state.isActive = user.isActive
         state.phone = user.phone
         state.id = user.id
-        state.isConnected = true
         persistData(CONSTANTS.TOKEN, payload.token)
+
+        state.isConnected = true
       }
     )
   },

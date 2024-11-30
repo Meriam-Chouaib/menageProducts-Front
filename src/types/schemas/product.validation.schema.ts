@@ -16,4 +16,14 @@ export const productValidationSchema = Yup.object().shape({
   category: Yup.string().required('Category is required'),
   description: Yup.string().required('description is required'),
   userId: Yup.number().required(''),
+  images: Yup.array()
+    .of(
+      Yup.mixed<File>().test('fileType', 'Unsupported file format', (value) => {
+        if (value instanceof File) {
+          return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
+        }
+        return false
+      })
+    )
+    .required('Product image is required'),
 })

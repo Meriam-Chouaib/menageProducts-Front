@@ -6,7 +6,7 @@ import { decodeSigninResponse } from './auth.decoders'
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: apiBaseQuery,
+  baseQuery: apiBaseQuery('auth'),
   endpoints: (builder) => ({
     signin: builder.mutation({
       query: ({ email, password }: Isignin) => ({

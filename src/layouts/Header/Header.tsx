@@ -30,6 +30,7 @@ const Header = () => {
     setOpenModalType(null)
     dispatch(signoutUser())
   }
+  // TODO fix this
   const isConnected = useAppSelector(selectIsConnected)
   return (
     <BoxHeader>

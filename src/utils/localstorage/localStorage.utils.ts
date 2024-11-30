@@ -31,4 +31,3 @@ export const updatePersistedData = (key: string, updateData: any) => {
   const newData = { ...existingData, ...updateData }
   persistData(key, newData)
 }
-// encrypt data
