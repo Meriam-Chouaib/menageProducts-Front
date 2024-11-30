@@ -23,13 +23,11 @@ export const persistData = (key: string, data: any) => {
   if (typeof data === CONSTANTS.Undefined) {
     return
   }
-  // TODO check this when i hve to encrypt the token exactly
-  // const dataString: string = encryptData(data)
-  localStorage.setItem(key, data)
+  const dataString: string = encryptData(data)
+  localStorage.setItem(key, dataString)
 }
 export const updatePersistedData = (key: string, updateData: any) => {
   const existingData = getPersistData(key, true)
   const newData = { ...existingData, ...updateData }
   persistData(key, newData)
 }
-// encrypt data
