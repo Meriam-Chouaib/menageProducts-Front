@@ -10,12 +10,11 @@ const CardItem = ({
   price,
   quantity,
   category,
-  key,
   onDelete,
   onEdit,
 }: CardItemProps) => {
   return (
-    <StackItem key={key}>
+    <StackItem>
       <Typography variant='h2' color='secondary'>
         {name}
       </Typography>

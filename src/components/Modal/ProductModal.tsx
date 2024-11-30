@@ -132,7 +132,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   field.value.filter((file) => file !== undefined) as File[]
                 } // Explicit type assertion
                 onChange={(files: File[]) => {
-                  console.log('Selected files:', files) // Check the selected files
                   field.onChange(
                     files.filter((file) => file !== undefined) as File[]
                   )

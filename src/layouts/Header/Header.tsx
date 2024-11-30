@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BoxHeader, LinkModal, LinkStyled } from './Header.style'
 import { RouteIdEnum } from '../../config/enums/routes.enum'
 import AuthModal from '../../components/Modal/AuthModal'
@@ -7,6 +7,7 @@ import { clearLocalStorage } from '../../utils/localstorage/clearLoalStorage'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { selectIsConnected, signoutUser } from '../../redux/slices/auth.slice'
 import { useLogoutMutation } from '../../redux/api/auth/auth.api'
+import { getPersistData } from 'utils/localstorage/localStorage.utils'
 
 const Header = () => {
   const dispatch = useAppDispatch()
@@ -30,8 +31,8 @@ const Header = () => {
     setOpenModalType(null)
     dispatch(signoutUser())
   }
-  // TODO fix this
-  const isConnected = useAppSelector(selectIsConnected)
+  const isConnected = getPersistData('token', true)
+
   return (
     <BoxHeader>
       <LinkStyled to={RouteIdEnum.PRODUCTS}>Products</LinkStyled>

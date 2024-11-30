@@ -4,7 +4,6 @@ export interface CardItemProps {
   category: string
   quantity: number
   price: number
-  key: string
   onEdit?: (() => void) | undefined
   onDelete?: (() => void) | undefined
 }

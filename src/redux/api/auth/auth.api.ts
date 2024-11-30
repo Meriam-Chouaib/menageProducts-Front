@@ -27,6 +27,7 @@ export const authApi = createApi({
       query: () => ({
         url: RouteIdEnum.LOGOUT,
         method: 'POST',
+        requiresAuth: true,
       }),
     }),
   }),
