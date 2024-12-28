@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { apiBaseQuery } from '../../../redux/baseQueryConfig'
+import { decodeGetProducts } from '../../../redux/api/product/product.decoders'
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -16,6 +17,8 @@ export const productApi = createApi({
           requiresAuth: false,
         }
       },
+
+      transformResponse: decodeGetProducts,
       providesTags: ['Products'],
     }),
     getProductById: builder.query({

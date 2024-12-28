@@ -1,18 +1,23 @@
 import { CardItemProps } from './CardItem.type'
 import { Stack, Typography } from '@mui/material'
-import { Icon, StackButtons, StackItem } from './CardItem.style'
+import { CardImage, Icon, StackButtons, StackItem } from './CardItem.style'
 import ButtonIcon from '../Buttons/ButtonIcon/ButtonIcon'
 import IconEdit from '../../assets/icons/iconEdit.png'
 import IconDelete from '../../assets/icons/iconDelete.png'
+import { useAppSelector } from '../../redux/hooks'
+import { selectUserId } from '../../redux/slices/auth.slice'
 
 const CardItem = ({
   name,
   price,
   quantity,
   category,
+  userId,
+  images,
   onDelete,
   onEdit,
 }: CardItemProps) => {
+  const userIdConnected = useAppSelector(selectUserId)
   return (
     <StackItem>
       <Typography variant='h2' color='secondary'>
@@ -27,10 +32,21 @@ const CardItem = ({
       <Typography variant='h3' color='secondary'>
         Category: {category}
       </Typography>
-      <StackButtons>
-        <ButtonIcon icon={<Icon src={IconEdit} />} onClick={onEdit} />
-        <ButtonIcon icon={<Icon src={IconDelete} />} onClick={onDelete} />
-      </StackButtons>
+      <>
+        {images &&
+          images.map((image, index) => {
+            return (
+              <CardImage key={index} src={image.name} alt={`Image ${index}`} />
+            )
+          })}
+      </>
+
+      {userIdConnected === userId && (
+        <StackButtons>
+          <ButtonIcon icon={<Icon src={IconEdit} />} onClick={onEdit} />
+          <ButtonIcon icon={<Icon src={IconDelete} />} onClick={onDelete} />
+        </StackButtons>
+      )}
     </StackItem>
   )
 }

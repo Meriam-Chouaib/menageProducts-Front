@@ -16,7 +16,6 @@ import RHFTextField from '../HookForm/TextField'
 import RHFSelect from '../HookForm/RHFSelect'
 import { selectUserId } from '../../redux/slices/auth.slice'
 import { useAppSelector } from '../../redux/hooks'
-import InputFile from 'components/HookForm/InputFile'
 import { MuiFileInput } from 'mui-file-input'
 
 interface ProductModalProps {
@@ -62,14 +61,17 @@ const ProductModal: React.FC<ProductModalProps> = ({
   } = methods
   useEffect(() => {
     if (productToEdit) {
-      reset({
-        name: productToEdit.name || '',
-        price: productToEdit.price || 0,
-        quantity: productToEdit.quantity || 0,
-        category: productToEdit.category,
-        description: productToEdit.description || '',
-        images: productToEdit.images || [],
-      })
+      ;(async () => {
+        const resolvedImages = await Promise.all(productToEdit.images || [])
+        reset({
+          name: productToEdit.name || '',
+          price: productToEdit.price || 0,
+          quantity: productToEdit.quantity || 0,
+          category: productToEdit.category,
+          description: productToEdit.description || '',
+          images: resolvedImages, // Set pre-resolved images
+        })
+      })()
     }
   }, [productToEdit, reset])
 
@@ -128,9 +130,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 {...field}
                 error={!!errors.images}
                 helperText={errors.images?.message}
-                value={
-                  field.value.filter((file) => file !== undefined) as File[]
-                } // Explicit type assertion
+                value={field.value}
                 onChange={(files: File[]) => {
                   field.onChange(
                     files.filter((file) => file !== undefined) as File[]

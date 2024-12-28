@@ -48,27 +48,34 @@ const ListProducts = () => {
   }
   const userId = useAppSelector(selectUserId)
   const handleModalSubmit = (product: IProduct) => {
-    const imagesData = product.images.map((image: any) => ({
-      url: image.name,
-    }))
+    const formData = new FormData()
+
+    formData.append('name', product.name)
+    formData.append('price', product.price.toString())
+    formData.append('quantity', product.quantity.toString())
+    formData.append('category', product.category)
+    formData.append('description', product.description)
+    formData.append('userId', userId.toString())
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      product.images.forEach((image: File) => {
+        formData.append('images', image)
+      })
+    }
+
     if (selectedProduct && selectedProduct.id != undefined) {
+      // TODO check the update product
       handleUpdate(
-        {
-          ...product,
-          images: {
-            create: imagesData,
-          },
-        },
+        formData,
+        // {
+        //   ...product,
+        //   images: {
+        //     create: imagesData,
+        //   },
+        // },
         selectedProduct.id
       )
     } else {
-      handleCreate({
-        ...product,
-        images: {
-          create: imagesData,
-        },
-        userId,
-      })
+      handleCreate(formData)
     }
     setOpenModal(false)
   }
@@ -100,14 +107,17 @@ const ListProducts = () => {
                 {...product}
                 onDelete={() => product?.id && handleDelete(product.id)}
                 onEdit={() => openEditModal(product)}
+                userId={product.userId}
               />
             ))}
           </StackStyled>
 
-          <Paginator
-            nbPages={productsResponse.nbPages}
-            onChange={(_e, page) => onChangePage(page)}
-          />
+          {productsResponse?.nbPages && (
+            <Paginator
+              nbPages={productsResponse?.nbPages}
+              onChange={(_e, page) => onChangePage(page)}
+            />
+          )}
         </>
       )}
 

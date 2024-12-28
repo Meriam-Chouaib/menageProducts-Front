@@ -15,7 +15,9 @@ export default function FormProvider({
 }: FormProviderProps) {
   return (
     <Form {...methods}>
-      <form onSubmit={onSubmit}>{children}</form>
+      <form onSubmit={onSubmit} encType='multipart/form-data'>
+        {children}
+      </form>
     </Form>
   )
 }
