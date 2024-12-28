@@ -29,7 +29,7 @@ export const useProducts = (search: string, paginator: Paginator) => {
   useEffect(() => {
     if (debouncedSearch && productsSearched) {
       setProductsToShow(productsSearched)
-    } else if (productsResponse) {
+    } else if (productsResponse && productsResponse != undefined) {
       setProductsToShow(productsResponse.products)
     }
   }, [debouncedSearch, productsSearched, productsResponse])
@@ -42,7 +42,7 @@ export const useProducts = (search: string, paginator: Paginator) => {
     }
   }
 
-  const handleUpdate = async (product: IProduct, selectedProductId: number) => {
+  const handleUpdate = async (product: FormData, selectedProductId: number) => {
     try {
       await updateProduct({ id: selectedProductId, ...product }).unwrap()
     } catch (error) {
@@ -50,7 +50,7 @@ export const useProducts = (search: string, paginator: Paginator) => {
     }
   }
 
-  const handleCreate = async (product: Product) => {
+  const handleCreate = async (product: FormData) => {
     try {
       await createProduct(product).unwrap()
     } catch (error) {

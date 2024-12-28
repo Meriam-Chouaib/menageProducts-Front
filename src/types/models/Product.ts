@@ -6,7 +6,7 @@ export interface Product {
   category: string
   description: string
   userId: number
-  images?: any
+  images?: File[]
 }
 export interface IProduct {
   name: string
@@ -14,9 +14,6 @@ export interface IProduct {
   quantity: number
   category: string
   description: string
-  images?: any
+  images?: File[]
   userId: number
-}
-export interface IImage {
-  url: string
 }

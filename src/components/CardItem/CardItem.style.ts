@@ -22,3 +22,7 @@ export const Icon = styled('img')(({ theme }) => ({
   height: '20px',
   width: 'auto',
 }))
+export const CardImage = styled('img')(({ theme }) => ({
+  height: 'auto',
+  width: '100%',
+}))
