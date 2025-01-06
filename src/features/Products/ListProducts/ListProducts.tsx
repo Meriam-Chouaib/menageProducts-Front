@@ -14,12 +14,14 @@ import Paginator from 'components/Paginator/Paginator'
 import ProductModal from 'components/Modal/ProductModal'
 import { selectRole, selectUserId } from '../../../redux/slices/auth.slice'
 import { useAppSelector } from '../../../redux/hooks'
+import { getPersistData } from 'utils/localstorage/localStorage.utils'
 
 const ListProducts = () => {
   const [search, setSearch] = useState('')
   const [openModal, setOpenModal] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const isConnected = getPersistData('token', true)
 
   const { paginator, onChangePage } = usePaginator({
     ...initialProductsPaginator,
@@ -84,7 +86,7 @@ const ListProducts = () => {
   return (
     <>
       <StackStyled justifyContent='space-between'>
-        {userRole != 'VISITOR' && (
+        {userRole != 'VISITOR' && isConnected && (
           <AddButton label='Add Product' onClick={openCreateModal} />
         )}
         <SearchInput

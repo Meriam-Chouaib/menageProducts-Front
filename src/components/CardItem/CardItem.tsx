@@ -6,6 +6,7 @@ import IconEdit from '../../assets/icons/iconEdit.png'
 import IconDelete from '../../assets/icons/iconDelete.png'
 import { useAppSelector } from '../../redux/hooks'
 import { selectUserId } from '../../redux/slices/auth.slice'
+import { Carousel } from 'components/Carousel/Carousel'
 
 const CardItem = ({
   name,
@@ -33,12 +34,7 @@ const CardItem = ({
         Category: {category}
       </Typography>
       <>
-        {images &&
-          images.map((image, index) => {
-            return (
-              <CardImage key={index} src={image.name} alt={`Image ${index}`} />
-            )
-          })}
+        <Carousel images={images} />
       </>
 
       {userIdConnected === userId && (

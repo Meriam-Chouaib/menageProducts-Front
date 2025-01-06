@@ -5,7 +5,11 @@ import AuthModal from '../../components/Modal/AuthModal'
 
 import { clearLocalStorage } from '../../utils/localstorage/clearLoalStorage'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { selectIsConnected, signoutUser } from '../../redux/slices/auth.slice'
+import {
+  selectIsConnected,
+  selectUserId,
+  signoutUser,
+} from '../../redux/slices/auth.slice'
 import { useLogoutMutation } from '../../redux/api/auth/auth.api'
 import { getPersistData } from 'utils/localstorage/localStorage.utils'
 
@@ -31,7 +35,9 @@ const Header = () => {
     setOpenModalType(null)
     dispatch(signoutUser())
   }
-  const isConnected = getPersistData('token', true)
+  const userId = useAppSelector(selectUserId)
+
+  const isConnected = getPersistData('token', true) && userId !== 0
 
   return (
     <BoxHeader>

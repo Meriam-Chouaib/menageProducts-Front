@@ -35,8 +35,10 @@ export const useProducts = (search: string, paginator: Paginator) => {
   }, [debouncedSearch, productsSearched, productsResponse])
 
   const handleDelete = async (id: number) => {
+    console.log('🚀 ~ handleDelete ~ id:', id)
     try {
-      await deleteProduct(id).unwrap()
+      const result = await deleteProduct(id).unwrap()
+      console.log('result:', result)
     } catch (error) {
       console.error('Error deleting product:', error)
     }
